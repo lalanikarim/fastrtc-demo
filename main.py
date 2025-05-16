@@ -103,6 +103,9 @@ async def receive_message(chat_message: ChatMessage):
     bot_message = Message(role="assistant", content=response_content)
     conversation_history.append(bot_message.model_dump())
     
+    # Trigger the response through the ReplyOnPause handler
+    reply_on_pause.trigger_response(response_content)
+    
     return {"response": response_content}
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
