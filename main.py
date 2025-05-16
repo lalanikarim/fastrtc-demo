@@ -7,6 +7,7 @@ from typing import List
 import os
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
+import json  # Added for JSON encoding
 
 # Import missing components (update paths as needed)
 from fastrtc import get_stt_model, get_tts_model
@@ -61,7 +62,7 @@ def talk(audio: tuple[int, np.ndarray]):
     conversation_history.append(user_message.model_dump())
     
     # Yield user message as AdditionalOutputs before invoking chat model
-    yield AdditionalOutputs(user_message)
+    yield AdditionalOutputs(user_message.model_dump())
     
     # Get response from chat model
     response = chat_model.invoke(conversation_history)
@@ -74,7 +75,7 @@ def talk(audio: tuple[int, np.ndarray]):
     conversation_history.append(bot_message.model_dump())
     
     # Yield AdditionalOutputs with bot_message as the first and only parameter
-    yield AdditionalOutputs(bot_message)
+    yield AdditionalOutputs(bot_message.model_dump())
     
     # Convert text to speech
     for audio_chunk in tts_model.stream_tts_sync(response_content):
@@ -100,7 +101,7 @@ async def stream_outputs(webrtc_id: str):
         async for output in stream.output_stream(webrtc_id):
             # Output is an instance of AdditionalOutputs
             # Extract the first argument (e.g., number of detections)
-            yield f"data: {output.args[0]}\n\n"
+            yield f"data: {json.dumps(output.args[0])}\n\n"
     
     return StreamingResponse(
         output_stream(),
