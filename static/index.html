@@ -138,6 +138,11 @@
                 console.error('Error:', error);
             });
         }
+
+        // Register onAdditionalOutputs callback
+        rtcClient.onAdditionalOutputs((output) => {
+            console.log('Received additional output:', output);
+        });
     </script>
 </body>
 </html>
