@@ -60,8 +60,11 @@ def talk(audio: tuple[int, np.ndarray]):
     for audio_chunk in tts_model.stream_tts_sync(response_content):
         yield audio_chunk
 
+# Initialize ReplyOnPause before setting the stream handler
+reply_on_pause = ReplyOnPause(talk)
+
 stream = Stream(
-    handler=ReplyOnPause(talk),
+    handler=reply_on_pause,
     modality="audio",
     mode="send-receive"
 )
