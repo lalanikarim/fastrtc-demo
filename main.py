@@ -90,20 +90,11 @@ async def stream_outputs(webrtc_id: str):
 # Define the input data model for the hook
 class InputData(BaseModel):
     webrtc_id: str
-    chatbot: List[Message]
-    state: List[Message]
-    textbox: str
 
 # New endpoint to receive text messages and trigger response
 @app.post("/input_hook")
 async def input_hook(data: InputData):
     webrtc_id = data.webrtc_id
-    chatbot = data.chatbot
-    state = data.state
-    textbox = data.textbox
-
-    # Set input data on the stream
-    stream.set_input(webrtc_id, chatbot, state, textbox)
 
     # Trigger the response
     handler = stream.handlers[webrtc_id]
@@ -128,7 +119,7 @@ async def receive_message(chat_message: ChatMessage):
     bot_message = Message(role="assistant", content=response_content)
     conversation_history.append(bot_message.model_dump())
     
-    # Trigger the response through the ReplyOnPause handler
+    # Trigger the response through the ReplyOn
     reply_on_pause.trigger_response()
     
     return {"response": response_content}
