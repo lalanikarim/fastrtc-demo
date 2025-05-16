@@ -63,7 +63,6 @@ stream = Stream(
 )
 
 stream.mount(app)
-app.mount("/", StaticFiles(directory="static"), name="static")
 
 # New endpoint for streaming additional outputs
 from fastapi.responses import StreamingResponse
@@ -88,6 +87,7 @@ async def receive_message(message: str):
     conversation_history.append(user_message.model_dump())
     return {"status": "Message received"}
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 def main():
     """Start the Uvicorn server with the FastAPI app."""
     uvicorn.run(app, host="0.0.0.0", port=8000)
