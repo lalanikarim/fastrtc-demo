@@ -104,7 +104,7 @@ async def receive_message(chat_message: ChatMessage):
     conversation_history.append(bot_message.model_dump())
     
     # Trigger the response through the ReplyOnPause handler
-    reply_on_pause.trigger_response(response_content)
+    reply_on_pause.trigger_response()
     
     return {"response": response_content}
 
