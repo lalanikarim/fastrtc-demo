@@ -1,5 +1,5 @@
-from fastrtc import Stream, ReplyOnPause, get_stt_model, get_tts_model
-from fastapi import FastAPI, StaticFiles
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 import numpy as np
 
@@ -7,9 +7,10 @@ app = FastAPI()
 
 app.mount("/", StaticFiles(directory="static"), name="static")
 
+stt_model = get_stt_model()
+tts_model = get_tts_model()
+
 def talk(audio: tuple[int, np.ndarray]):
-    stt_model = get_stt_model()
-    tts_model = get_tts_model()
     text = stt_model.stt(audio)
     for audio_chunk in tts_model.stream_tts_sync(text):
         yield audio_chunk
