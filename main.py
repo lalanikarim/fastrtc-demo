@@ -2,13 +2,22 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 import numpy as np
+from pydantic import BaseModel
+from typing import List
 
 # Import missing components (update paths as needed)
 from fastrtc import get_stt_model, get_tts_model
 from fastrtc import Stream, ReplyOnPause
 
-app = FastAPI()
+# Pydantic model for conversation messages
+class Message(BaseModel):
+    role: str
+    content: str
 
+# Global list to store conversation history
+conversation_history: List[Message] = []
+
+app = FastAPI()
 
 stt_model = get_stt_model()
 tts_model = get_tts_model()
