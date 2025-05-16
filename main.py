@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, StaticFiles
 from fastrtc import Stream, ReplyOnPause
 import uvicorn
 import numpy as np
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 def echo(audio: tuple[int, np.ndarray]):
     """Example handler function for audio processing."""
