@@ -2,10 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Static Page</title>
+    <title>Chat Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+        }
+        #chat-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user {
+            background: #d1e7dd;
+            align-self: flex-end;
+        }
+        .bot {
+            background: #f8d7da;
+            align-self: flex-start;
+        }
+        #input-area {
+            display: flex;
+            gap: 10px;
+        }
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #send-button {
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Static Folder!</h1>
-    <p>This is a simple HTML file served by FastAPI.</p>
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <div id="input-area">
+            <input type="text" id="message-input" placeholder="Type your message..." />
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+        document.getElementById('message-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Display user message
+            const chatBox = document.getElementById('chat-box');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.textContent = message;
+            chatBox.appendChild(userMsg);
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Send to server
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.text())
+            .then(botReply => {
+                // Display bot reply
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message bot';
+                botMsg.textContent = botReply;
+                chatBox.appendChild(botMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </body>
 </html>
