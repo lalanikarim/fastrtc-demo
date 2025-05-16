@@ -4,8 +4,8 @@ import uvicorn
 import numpy as np
 
 # Import missing components (update paths as needed)
-from models import get_stt_model, get_tts_model
-from stream import Stream, ReplyOnPause
+from fastrtc import get_stt_model, get_tts_model
+from fastrtc import Stream, ReplyOnPause
 
 app = FastAPI()
 
