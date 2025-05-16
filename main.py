@@ -3,6 +3,10 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 import numpy as np
 
+# Import missing components (update paths as needed)
+from models import get_stt_model, get_tts_model
+from stream import Stream, ReplyOnPause
+
 app = FastAPI()
 
 app.mount("/", StaticFiles(directory="static"), name="static")
