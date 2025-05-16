@@ -35,8 +35,21 @@ chat_model = init_chat_model(
 )
 
 def talk(audio: tuple[int, np.ndarray]):
-    text = stt_model.stt(audio)
-    for audio_chunk in tts_model.stream_tts_sync(text):
+    # Convert audio to text
+    prompt = stt_model.stt(audio)
+    
+    # Create user message and add to conversation history
+    user_message = Message(role="user", content=prompt)
+    conversation_history.append(user_message)
+    
+    # Get response from chat model
+    response = chat_model.invoke(conversation_history)
+    
+    # Extract content from response
+    response_content = response.content if hasattr(response, 'content') else response
+    
+    # Convert text to speech
+    for audio_chunk in tts_model.stream_tts_sync(response_content):
         yield audio_chunk
 
 stream = Stream(
