@@ -1,11 +1,11 @@
-# WebRTC Chat Interface
+# FastRTC Voice Chat Demo
 
 ## Project Overview
-This project provides a real-time chat interface using WebRTC for audio communication, integrated with a FastAPI backend and LangChain for conversational AI. The system supports voice and text messaging, with seamless audio processing via STT (Speech-to-Text) and TTS (Text-to-Speech) models.
+This project provides a real-time voice chat interface using FastRTC for audio communication, integrated with a FastAPI backend and LangChain for conversational AI. The system supports voice and text messaging, with seamless audio processing via STT (Speech-to-Text) and TTS (Text-to-Speech) models.
 
 ## Features
 - Real-time voice and text chat
-- WebRTC audio streaming
+- FastRTC audio streaming
 - Integration with OLLAMA LLM for conversational responses
 - Persistent chat history
 - Web interface with message display and controls
@@ -17,7 +17,8 @@ This project provides a real-time chat interface using WebRTC for audio communic
 - Uvicorn
 - LangChain
 - OLLAMA API
-- WebRTC client library
+- [FastRTC](https://github.com/lalanikarim/fastrtc) (WebSocket audio streaming)
+- [fastrtc-client.js](https://github.com/lalanikarim/fastrtc-client) (JavaScript client library)
 
 ### Installation
 1. Clone the repository
@@ -37,13 +38,13 @@ python app.py
 ## Usage
 ### Frontend
 1. Open `static/index.html` in a browser
-2. Click "Connect" to establish WebRTC connection
+2. Click "Connect" to establish FastRTC connection
 3. Use the chat interface to send messages
 4. Voice messages are automatically transcribed and responded to by the AI
 
 ### Backend
 The FastAPI server handles:
-- WebRTC signaling
+- FastRTC signaling
 - Audio processing
 - Chat history management
 - AI response generation
