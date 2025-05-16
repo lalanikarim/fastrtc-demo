@@ -151,7 +151,12 @@
 
         // Register onAdditionalOutputs callback
         rtcClient.onAdditionalOutputs((output) => {
-            console.log('Received additional output:', output);
+            const data = JSON.parse(output.data);
+            if (data.role === "user") {
+                displayUserMessage(data.content);
+            } else if (data.role === "assistant") {
+                displayBotMessage(data.content);
+            }
         });
     </script>
 </body>
