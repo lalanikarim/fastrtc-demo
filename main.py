@@ -9,7 +9,6 @@ from fastrtc import Stream, ReplyOnPause
 
 app = FastAPI()
 
-app.mount("/", StaticFiles(directory="static"), name="static")
 
 stt_model = get_stt_model()
 tts_model = get_tts_model()
@@ -24,6 +23,9 @@ stream = Stream(
     modality="audio",
     mode="send-receive"
 )
+
+stream.mount(app)
+app.mount("/", StaticFiles(directory="static"), name="static")
 
 def main():
     """Start the Uvicorn server with the FastAPI app."""
