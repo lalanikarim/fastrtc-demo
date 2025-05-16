@@ -17,7 +17,7 @@ This project provides a real-time voice chat interface using FastRTC for audio c
 - Uvicorn
 - LangChain
 - OLLAMA API
-- [FastRTC](https://github.com/lalanikarim/fastrtc) (WebSocket audio streaming)
+- [FastRTC](https://www.fastrtc.org) (WebSocket audio streaming)
 - [fastrtc-client.js](https://github.com/lalanikarim/fastrtc-client) (JavaScript client library)
 
 ### Installation
