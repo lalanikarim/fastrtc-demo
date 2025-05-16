@@ -40,6 +40,7 @@ def talk(audio: tuple[int, np.ndarray]):
     
     # Create user message and add to conversation history
     user_message = Message(role="user", content=prompt)
+    user_message = user_message.model_dump()
     conversation_history.append(user_message)
     
     # Get response from chat model
