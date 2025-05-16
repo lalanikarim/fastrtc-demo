@@ -6,7 +6,7 @@ import numpy as np
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/", StaticFiles(directory="static"), name="static")
 
 def echo(audio: tuple[int, np.ndarray]):
     """Example handler function for audio processing."""
