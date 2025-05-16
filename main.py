@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 import json
+from fastapi.responses import StreamingResponse
 
 from fastrtc import get_stt_model, get_tts_model
 from fastrtc import Stream, ReplyOnPause, AdditionalOutputs
@@ -36,7 +37,7 @@ chat_model = init_chat_model(
 def talk(audio: tuple[int, np.ndarray]):
     if np.shape(audio[1])[1] == 0:
         if conversation_history:
-            tts_content = conversation_history[-1].content
+            tts_content = conversation_history[-1]['content']
             for audio_chunk in tts_model.stream_tts_sync(tts_content):
                 yield audio_chunk
         return
@@ -62,7 +63,7 @@ stream = Stream(
     mode="send-receive"
 )
 
-from fastapi.responses import StreamingResponse
+stream.mount(app)
 
 @app.get("/outputs")
 async def stream_outputs(webrtc_id: str):
