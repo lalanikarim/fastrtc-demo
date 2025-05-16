@@ -20,6 +20,10 @@ class Message(BaseModel):
     role: str
     content: str
 
+# Pydantic model for incoming chat message
+class ChatMessage(BaseModel):
+    message: str
+
 # Global list to store conversation history
 conversation_history: List[Message] = []
 
@@ -82,8 +86,8 @@ async def stream_outputs(webrtc_id: str):
 
 # New endpoint to receive text messages
 @app.post("/chat")
-async def receive_message(message: str):
-    user_message = Message(role="user", content=message)
+async def receive_message(chat_message: ChatMessage):
+    user_message = Message(role="user", content=chat_message.message)
     conversation_history.append(user_message.model_dump())
     return {"status": "Message received"}
 
