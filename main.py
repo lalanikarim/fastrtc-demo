@@ -89,7 +89,18 @@ async def stream_outputs(webrtc_id: str):
 async def receive_message(chat_message: ChatMessage):
     user_message = Message(role="user", content=chat_message.message)
     conversation_history.append(user_message.model_dump())
-    return {"status": "Message received"}
+    
+    # Get response from chat model
+    response = chat_model.invoke(conversation_history)
+    
+    # Extract content from response
+    response_content = response.content if hasattr(response, 'content') else response
+    
+    # Create bot message and add to conversation history
+    bot_message = Message(role="assistant", content=response_content)
+    conversation_history.append(bot_message.model_dump())
+    
+    return {"response": response_content}
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 def main():
