@@ -40,7 +40,6 @@ def talk(audio: tuple[int, np.ndarray]):
     
     # Create user message and add to conversation history
     user_message = Message(role="user", content=prompt)
-    user_message = user_message.model_dump()
     conversation_history.append(user_message)
     
     # Get response from chat model
@@ -48,6 +47,10 @@ def talk(audio: tuple[int, np.ndarray]):
     
     # Extract content from response
     response_content = response.content if hasattr(response, 'content') else response
+    
+    # Create bot message and add to conversation history
+    bot_message = Message(role="assistant", content=response_content)
+    conversation_history.append(bot_message)
     
     # Convert text to speech
     for audio_chunk in tts_model.stream_tts_sync(response_content):
