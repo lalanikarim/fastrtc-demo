@@ -93,7 +93,7 @@ async def receive_message(chat_message: ChatMessage):
     conversation_history.append(bot_message.model_dump())
     return {"response": response_content}
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/", StaticFiles(directory="static"), name="static")
 
 def main():
     uvicorn.run(app, host="0.0.0.0", port=8000)
