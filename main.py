@@ -42,6 +42,17 @@ def talk(audio: tuple[int, np.ndarray]):
     # Debug: Print the size of audio[1] (the actual audio data)
     print(f"Audio data size: {np.shape(audio[1])}")
     
+    # Check if audio data is empty
+    if np.shape(audio[1])[1] == 0:
+        # Get the last message from conversation history
+        if conversation_history:
+            last_message = conversation_history[-1]
+            # Convert to text and generate TTS
+            tts_content = last_message['content']
+            for audio_chunk in tts_model.stream_tts_sync(tts_content):
+                yield audio_chunk
+        return  # Exit the function early
+
     # Convert audio to text
     prompt = stt_model.stt(audio)
     
