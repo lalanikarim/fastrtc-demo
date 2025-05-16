@@ -81,6 +81,13 @@ async def stream_outputs(webrtc_id: str):
         media_type="text/event-stream"
     )
 
+# New endpoint to receive text messages
+@app.post("/chat")
+async def receive_message(message: str):
+    user_message = Message(role="user", content=message)
+    conversation_history.append(user_message.model_dump())
+    return {"status": "Message received"}
+
 def main():
     """Start the Uvicorn server with the FastAPI app."""
     uvicorn.run(app, host="0.0.0.0", port=8000)
