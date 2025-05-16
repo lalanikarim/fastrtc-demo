@@ -1,4 +1,5 @@
-from fastapi import FastAPI, StaticFiles
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastrtc import Stream, ReplyOnPause
 import uvicorn
 import numpy as np
