@@ -1,6 +1,4 @@
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastrtc import Stream, ReplyOnPause
+from fastrtc import Stream, ReplyOnPause, get_stt_model, get_tts_model
 import uvicorn
 import numpy as np
 
@@ -8,19 +6,18 @@ app = FastAPI()
 
 app.mount("/", StaticFiles(directory="static"), name="static")
 
-def echo(audio: tuple[int, np.ndarray]):
-    """Example handler function for audio processing."""
-    yield audio  # Echo the input audio back to the client
+def talk(audio: tuple[int, np.ndarray]):
+    stt_model = get_stt_model()
+    tts_model = get_tts_model()
+    text = stt_model.stt(audio)
+    for audio_chunk in tts_model.stream_tts_sync(text):
+        yield audio_chunk
 
-# Initialize the Stream with the handler, modality, and mode
 stream = Stream(
-    handler=ReplyOnPause(echo),
+    handler=ReplyOnPause(talk),
     modality="audio",
     mode="send-receive"
 )
-
-# Mount the Stream on the FastAPI app
-stream.mount(app)
 
 def main():
     """Start the Uvicorn server with the FastAPI app."""
