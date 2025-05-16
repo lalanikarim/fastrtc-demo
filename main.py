@@ -70,8 +70,8 @@ def talk(audio: tuple[int, np.ndarray]):
     bot_message = Message(role="assistant", content=response_content)
     conversation_history.append(bot_message.model_dump())
     
-    # Yield AdditionalOutputs with response_content
-    yield AdditionalOutputs(args=(response_content,))
+    # Yield AdditionalOutputs with bot_message as the first and only parameter
+    yield AdditionalOutputs(bot_message)
     
     # Convert text to speech
     for audio_chunk in tts_model.stream_tts_sync(response_content):
