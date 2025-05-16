@@ -76,6 +76,25 @@
             debug: false,
         });
 
+        // Helper functions for message display
+        function displayUserMessage(message) {
+            const chatBox = document.getElementById('chat-box');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.textContent = message;
+            chatBox.appendChild(userMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function displayBotMessage(message) {
+            const chatBox = document.getElementById('chat-box');
+            const botMsg = document.createElement('div');
+            botMsg.className = 'message bot';
+            botMsg.textContent = message;
+            chatBox.appendChild(botMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
         // Connect button logic
         document.getElementById("connect-button").addEventListener("click", () => {
             rtcClient.start();
@@ -101,13 +120,8 @@
             if (!message) return;
 
             // Display user message
-            const chatBox = document.getElementById('chat-box');
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            userMsg.textContent = message;
-            chatBox.appendChild(userMsg);
+            displayUserMessage(message);
             input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
 
             // Send to server
             fetch('/chat', {
@@ -118,15 +132,11 @@
             .then(response => response.json())
             .then(botReply => {
                 // Display bot reply
-                const botMsg = document.createElement('div');
-                botMsg.className = 'message bot';
-                botMsg.textContent = botReply.response;
-                chatBox.appendChild(botMsg);
-                chatBox.scrollTop = chatBox.scrollHeight;
+                displayBotMessage(botReply.response);
 
                 // Send webrtc_id to /input_hook if available
                 if (rtcClient && rtcClient.getWebRTCId) {
-                    const webrtcId = rtcClient.getWebRTCId();
+                    const webrtcId = rtcClient.getWebRTC0();
                     fetch('/input_hook', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
