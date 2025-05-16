@@ -53,12 +53,19 @@
             padding: 10px 15px;
             font-size: 16px;
         }
+        #audio-player {
+            margin-top: 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/gh/lalanikarim/fastrtc-client/fastrtc-client.js"></script>
 </head>
 <body>
     <div id="chat-container">
         <div id="chat-box"></div>
+        <audio id="audio-player" controls></audio>
         <div id="input-area">
             <input type="text" id="message-input" placeholder="Type your message..." />
             <button id="send-button">Send</button>
