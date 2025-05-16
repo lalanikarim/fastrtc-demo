@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastrtc import Stream
+from fastrtc import Stream, ReplyOnPause
 import uvicorn
 import numpy as np
 
@@ -11,7 +11,7 @@ def echo(audio: tuple[int, np.ndarray]):
 
 # Initialize the Stream with the handler, modality, and mode
 stream = Stream(
-    handler=echo,
+    handler=ReplyOnPause(echo),
     modality="audio",
     mode="send-receive"
 )
