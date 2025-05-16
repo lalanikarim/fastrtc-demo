@@ -136,7 +136,7 @@
 
                 // Send webrtc_id to /input_hook if available
                 if (rtcClient && rtcClient.getWebRTCId) {
-                    const webrtcId = rtcClient.getWebRTC0();
+                    const webrtcId = rtcClient.getWebRTCId();
                     fetch('/input_hook', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
