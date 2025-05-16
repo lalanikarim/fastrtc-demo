@@ -10,7 +10,7 @@ from langchain.chat_models import init_chat_model
 
 # Import missing components (update paths as needed)
 from fastrtc import get_stt_model, get_tts_model
-from fastrtc import Stream, ReplyOnPause
+from fastrtc import Stream, ReplyOnPause, AdditionalOutputs
 
 # Load environment variables from .env file
 load_dotenv()
@@ -64,6 +64,22 @@ stream = Stream(
 
 stream.mount(app)
 app.mount("/", StaticFiles(directory="static"), name="static")
+
+# New endpoint for streaming additional outputs
+from fastapi.responses import StreamingResponse
+
+@app.get("/outputs")
+async def stream_outputs(webrtc_id: str):
+    async def output_stream():
+        async for output in stream.output_stream(webrtc_id):
+            # Output is an instance of AdditionalOutputs
+            # Extract the first argument (e.g., number of detections)
+            yield f"data: {output.args[0]}\n\n"
+    
+    return StreamingResponse(
+        output_stream(),
+        media_type="text/event-stream"
+    )
 
 def main():
     """Start the Uvicorn server with the FastAPI app."""
