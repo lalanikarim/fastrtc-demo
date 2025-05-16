@@ -68,6 +68,28 @@
         </div>
     </div>
     <script>
+        // Initialize FastRTC client
+        const rtcClient = new FastRTCClient({
+            offer_url: "/webrtc/offer", // Adjust if your server uses a different endpoint
+            additional_inputs_url: "/input_hook",
+            additional_outputs_url: "/outputs",
+            debug: false,
+        });
+
+        // Connect button logic
+        document.getElementById("connect-button").addEventListener("click", () => {
+            rtcClient.start();
+            document.getElementById("connect-button").style.display = "none";
+            document.getElementById("disconnect-button").style.display = "inline-block";
+        });
+
+        // Disconnect button logic
+        document.getElementById("disconnect-button").addEventListener("click", () => {
+            rtcClient.stop();
+            document.getElementById("connect-button").style.display = "inline-block";
+            document.getElementById("disconnect-button").style.display = "none";
+        });
+
         document.getElementById('send-button').addEventListener('click', sendMessage);
         document.getElementById('message-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') sendMessage();
@@ -106,29 +128,6 @@
                 console.error('Error:', error);
             });
         }
-    </script>
-    <script>
-        // Initialize FastRTC client
-        const rtcClient = new FastRTCClient({
-            offer_url: "/webrtc/offer", // Adjust if your server uses a different endpoint
-            additional_inputs_url: "/input_hook",
-            additional_outputs_url: "/outputs",
-            debug: false,
-        });
-
-        // Connect button logic
-        document.getElementById("connect-button").addEventListener("click", () => {
-            rtcClient.start();
-            document.getElementById("connect-button").style.display = "none";
-            document.getElementById("disconnect-button").style.display = "inline-block";
-        });
-
-        // Disconnect button logic
-        document.getElementById("disconnect-button").addEventListener("click", () => {
-            rtcClient.stop();
-            document.getElementById("connect-button").style.display = "inline-block";
-            document.getElementById("disconnect-button").style.display = "none";
-        });
     </script>
 </body>
 </html>
