@@ -120,7 +120,7 @@ async def receive_message(chat_message: ChatMessage):
     conversation_history.append(bot_message.model_dump())
     
     # Trigger the response through the ReplyOn
-    reply_on_pause.trigger_response()
+    # reply_on_pause.trigger_response()  # Removed per request
     
     return {"response": response_content}
 
