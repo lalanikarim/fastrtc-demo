@@ -4,10 +4,16 @@ import uvicorn
 import numpy as np
 from pydantic import BaseModel
 from typing import List
+import os
+from dotenv import load_dotenv
+from langchain.chat_models import init_chat_model
 
 # Import missing components (update paths as needed)
 from fastrtc import get_stt_model, get_tts_model
 from fastrtc import Stream, ReplyOnPause
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Pydantic model for conversation messages
 class Message(BaseModel):
@@ -21,6 +27,12 @@ app = FastAPI()
 
 stt_model = get_stt_model()
 tts_model = get_tts_model()
+
+# Initialize chat model with Ollama configuration
+chat_model = init_chat_model(
+    model="ollama:llama3.2",
+    base_url=os.getenv("OLLAMA_API_BASE")
+)
 
 def talk(audio: tuple[int, np.ndarray]):
     text = stt_model.stt(audio)
