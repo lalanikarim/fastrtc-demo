@@ -1,0 +1,27 @@
+from fastapi import FastAPI
+from fastrtc import Stream
+import uvicorn
+import numpy as np
+
+app = FastAPI()
+
+def echo(audio: tuple[int, np.ndarray]):
+    """Example handler function for audio processing."""
+    yield audio  # Echo the input audio back to the client
+
+# Initialize the Stream with the handler, modality, and mode
+stream = Stream(
+    handler=echo,
+    modality="audio",
+    mode="send-receive"
+)
+
+# Mount the Stream on the FastAPI app
+stream.mount(app)
+
+def main():
+    """Start the Uvicorn server with the FastAPI app."""
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+if __name__ == "__main__":
+    main()
