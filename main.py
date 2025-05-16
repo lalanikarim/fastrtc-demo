@@ -39,6 +39,9 @@ chat_model = init_chat_model(
 )
 
 def talk(audio: tuple[int, np.ndarray]):
+    # Debug: Print the size of audio[1] (the actual audio data)
+    print(f"Audio data size: {np.shape(audio[1])}")
+    
     # Convert audio to text
     prompt = stt_model.stt(audio)
     
