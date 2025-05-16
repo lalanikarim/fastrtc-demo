@@ -60,6 +60,9 @@ def talk(audio: tuple[int, np.ndarray]):
     user_message = Message(role="user", content=prompt)
     conversation_history.append(user_message.model_dump())
     
+    # Yield user message as AdditionalOutputs before invoking chat model
+    yield AdditionalOutputs(user_message)
+    
     # Get response from chat model
     response = chat_model.invoke(conversation_history)
     
